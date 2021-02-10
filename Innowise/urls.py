@@ -17,10 +17,17 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path
 
+from API import urls
 from tinder.views import UserRetrieveUpdateAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('user/', include('API.urls')),
 
+    path('api/v1/auth/', include('djoser.urls')),
+    path('api/v1/user/', include('User.urls')),
+
+
+
+    path('api/v1/auth-token/', include('djoser.urls.authtoken')),
 ]
