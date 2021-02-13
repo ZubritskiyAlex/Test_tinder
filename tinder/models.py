@@ -40,12 +40,12 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-
         return self._create_user(email, password=password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=40, unique=True)
+    is_staff = models.BooleanField(default=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     sex = models.IntegerField(choices=SEX_ENUM)
@@ -60,6 +60,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     subscription = models.IntegerField(choices=SUBSCRIPTION_ENUM, verbose_name='Kind of subscription')
     date_joined = models.DateTimeField(default=timezone.now)
 
+    type_subscriber = models.CharField(max_length=80,
+                                       verbose_name="type_subscriber",
+                                       default="standart")
+    swipes = models.IntegerField(verbose_name="swipes", default="20")
+    radius = models.IntegerField(verbose_name="radius", default="10")
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -68,3 +74,5 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         super(User, self).save(*args, **kwargs)
         return self
+
+
